@@ -1,5 +1,5 @@
 from nose.tools import *
-import NAME
+import scraper
 
 def setup():
     print "SETUP!"
