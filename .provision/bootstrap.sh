@@ -34,6 +34,7 @@ echo "[+] Installing Python..."
 sudo apt-get install -y python2.7
 sudo apt-get install -y python-virtualenv
 sudo apt-get install -y python-nose
+sudo apt-get install -y python-bs4
 
 echo "[+] Cloning project..."
 git clone https://github.com/aseemm/scraper.git sandbox
