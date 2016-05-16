@@ -36,7 +36,7 @@ sudo apt-get install -y python-virtualenv
 sudo apt-get install -y python-nose
 
 echo "[+] Cloning project..."
-git clone https://github.com/aseemm/scraper.git
+git clone https://github.com/aseemm/scraper.git sandbox
 
 echo "[+] Deployment complete!"
 exit 0
