@@ -21,6 +21,7 @@ def get_campsite_info(url, d):
     url = url + '&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=1'
     resp = requests.get(url,proxies=urllib.getproxies())
     soup = BeautifulSoup(resp.text,"html.parser")
+    # print soup.prettify().encode('utf-8')
     
     data = []
     table = soup.find('table', attrs={'id':'calendar'})
@@ -31,7 +32,7 @@ def get_campsite_info(url, d):
         cols = row.find_all('td')
         cols = [ele.text.strip() for ele in cols]
         data.append([ele for ele in cols if ele]) # get rid of empty values
-    
+    print cols[0]
     return cols[0]
 
 def check_latest_status(status, url, d):
