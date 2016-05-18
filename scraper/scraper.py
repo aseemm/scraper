@@ -20,8 +20,19 @@ from datetime import date, timedelta
 def main():
     """Main entry point for the script"""
 
+    campsites_url = [
+        'http://www.reserveamerica.com/campsiteDetails.do?siteId=535&contractCode=CA&parkId=120003',
+        'http://www.reserveamerica.com/campsiteDetails.do?siteId=536&contractCode=CA&parkId=120003',
+        'http://www.reserveamerica.com/campsiteDetails.do?siteId=537&contractCode=CA&parkId=120003'
+        ]
+
+    dates_url = [
+        date(2016, 8, 6),
+        date(2016, 8, 20)
+        ]
+
     d = date(2016, 8, 6)
-    url = 'http://www.reserveamerica.com/campsiteDetails.do?siteId=535&contractCode=CA&parkId=120003&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=1'
+    url = 'http://www.reserveamerica.com/campsiteDetails.do?siteId=535&contractCode=CA&parkId=120003' + '&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=1'
     resp = requests.get(url,proxies=urllib.getproxies())
     soup = BeautifulSoup(resp.text,"html.parser")
 
@@ -53,7 +64,8 @@ def main():
 
     for index in range(len(cols)):
         d = d + timedelta(days=index)
-        print(d.strftime("%m/%d/%y") + " " + d.strftime("%a") + " " + cols[index])
+        if cols[index] == "A":
+            print(cols[index] + " " + d.strftime("%m/%d/%y") + " " + d.strftime("%a") + " " + url)
 
     # table = soup.find("table", { "id" : "calendar" })
     # for row in table.findAll("tr"):
