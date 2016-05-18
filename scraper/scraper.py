@@ -17,6 +17,29 @@ from datetime import date, timedelta
 # soup.select('a[href^="http://example.com/"]')     # find tags by attribute value, all contains 'http://example.com/'
 # soup.select('p[lang|=en]')                        # match language code
 
+def get_campsite_info(url, d):
+    url = url + '&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=1'
+    resp = requests.get(url,proxies=urllib.getproxies())
+    soup = BeautifulSoup(resp.text,"html.parser")
+    
+    data = []
+    table = soup.find('table', attrs={'id':'calendar'})
+    table_body = table.find('tbody')
+
+    rows = table_body.find_all('tr')
+    for row in rows:
+        cols = row.find_all('td')
+        cols = [ele.text.strip() for ele in cols]
+        data.append([ele for ele in cols if ele]) # get rid of empty values
+    
+    return cols[0]
+
+def check_latest_status(status, url, d):
+    for index in range(len(status)):
+        d = d + timedelta(days=index)
+        if status[index] == "A":
+            print(status[index] + " " + d.strftime("%m/%d/%y") + " " + d.strftime("%a") + " " + url)
+
 def main():
     """Main entry point for the script"""
 
@@ -84,6 +107,11 @@ def main():
     # all_tables = soup.find_all("table")
     # for table in all_tables:
     #    print table
+
+    print "Scraping..."
+    for url in campsites_url:
+        for d in dates_url:
+            check_latest_status(get_campsite_info(url, d), url, d)
     pass
 
 if __name__ == '__main__':
