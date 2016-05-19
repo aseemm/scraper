@@ -27,6 +27,32 @@ todo - implement 'non 1' number of days
 # soup.select('a[href^="http://example.com/"]')     # find tags by attribute value, all contains 'http://example.com/'
 # soup.select('p[lang|=en]')                        # match language code
 
+# global
+angel_island_siteid_info = [
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120003&startIdx=0',
+   ]
+angel_island_campsite_url_head = 'http://www.reserveamerica.com/campsiteDetails.do?contractCode=CA&parkId=120003'
+angel_island_switch_map = {'table_format': 1}
+
+dl_bliss_siteid_info = [
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120099&startIdx=0',
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120099&startIdx=25',
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120099&startIdx=50',
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120099&startIdx=75',
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120099&startIdx=100',
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120099&startIdx=125',
+   ]
+dl_bliss_campsite_url_head = 'http://www.reserveamerica.com/campsiteDetails.do?contractCode=CA&parkId=120099'
+dl_bliss_switch_map = {'table_format': 1}
+
+yosemite_lower_pines_siteid_info = [
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70928&startIdx=0',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70928&startIdx=25',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70928&startIdx=50',
+   ]
+yosemite_lower_pines_campsite_url_head = 'http://www.recreation.gov/camping/Lower_Pines/r/campsiteDetails.do?contractCode=NRSO&parkId=70928'
+yosemite_lower_pines_switch_map = {'table_format': 0}
+
 def send_mail(user, pwd, recipient, subject, body):
     gmail_user = user
     gmail_pwd = pwd
@@ -70,18 +96,6 @@ def send_mail_over_ssl(user, pwd, recipient, subject, body):
     server_ssl.close()
     # print 'successfully sent the mail'
 
-def is_campsite_available(campground, campsites, d, number_of_days):
-   body = ""
-   for url in campsites:
-      url_var = url + '&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=1'
-      # print url_var
-      campsite_reservation_map = get_campsite_info(url_var, d) 
-      if get_campsite_status(campsite_reservation_map, d, 1):
-         subject = campground + ' - ' + 'Campsite Available!!!'
-         body = body  + '\n' + d.strftime("%m/%d/%y") + ' ' + d.strftime("%a") + ' - ' + url_var
-         print campground + ' - ' + 'Campsite Available' + ' ' + d.strftime("%m/%d/%y") + ' ' + d.strftime("%a") + ' - ' + url_var
-   # send_mail_over_ssl('bugmenot345@gmail.com', 'suzqUDD6', 'aseemm@gmail.com', subject, body)
-
 def get_campsite_info(url, d):
     # print "Scraping..." + url 
     resp = requests.get(url,proxies=urllib.getproxies())
@@ -113,6 +127,27 @@ def get_campsite_status(campsite_reservation_map, d, number_of_days):
         else:
             return False
 
+def get_campground_siteids(x):
+    return {
+        'Angel Island State Park': angel_island_siteid_info,
+        'DL Bliss State Park': dl_bliss_siteid_info,
+        'Yosemite Lower Pines': yosemite_lower_pines_siteid_info,
+    }.get(x, angel_island_siteid_info)
+
+def get_campground_campsite_url_head(x):
+    return {
+        'Angel Island State Park': angel_island_campsite_url_head,
+        'DL Bliss State Park': dl_bliss_campsite_url_head,
+        'Yosemite Lower Pines': yosemite_lower_pines_campsite_url_head,
+    }.get(x, angel_island_campsite_url_head)
+
+def get_switch_map(x):
+    return {
+        'Angel Island State Park': angel_island_switch_map,
+        'DL Bliss State Park': dl_bliss_switch_map,
+        'Yosemite Lower Pines': yosemite_lower_pines_switch_map,
+    }.get(x, angel_island_switch_map)
+
 def main():
     """Main entry point for the script"""
 
@@ -128,150 +163,41 @@ def main():
 #        ["Angel Island State Park, CA", date(2016, 8, 27)],
         ]
 
-    campground_info = [
-        "Angel Island State Park, CA"
-        ]
+    campground = "Angel Island State Park"
+    #campground = "DL Bliss State Park"
+    campground = "Yosemite Lower Pines"
+    d = date(2016, 8, 24)
+    length_of_stay = 1
 
-    angel_island_campsite_info = [
-       'http://www.reserveamerica.com/campsiteDetails.do?siteId=535&contractCode=CA&parkId=120003',
-       'http://www.reserveamerica.com/campsiteDetails.do?siteId=536&contractCode=CA&parkId=120003',
-       'http://www.reserveamerica.com/campsiteDetails.do?siteId=537&contractCode=CA&parkId=120003',
-       'http://www.reserveamerica.com/campsiteDetails.do?siteId=538&contractCode=CA&parkId=120003',
-       'http://www.reserveamerica.com/campsiteDetails.do?siteId=539&contractCode=CA&parkId=120003',
-       'http://www.reserveamerica.com/campsiteDetails.do?siteId=540&contractCode=CA&parkId=120003',
-        ]
 
-    dl_bliss_campsite_info = [
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2455&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2456&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2457&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2458&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2459&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2460&contractCode=CA&parkId=120099',
+    siteid_info = get_campground_siteids(campground)
+    campsite_url_head = get_campground_campsite_url_head(campground)
+    switch_map = get_switch_map(campground)
 
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2461&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2462&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2463&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2464&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2465&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2466&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2467&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2468&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2469&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2470&contractCode=CA&parkId=120099',
+    body = ""
+    # extract siteid's for campground
+    siteid_list = []
+    for url in siteid_info:
+       print url
+       resp = requests.get(url,proxies=urllib.getproxies())
+       soup = BeautifulSoup(resp.text,"html.parser")
 
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2471&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2472&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2473&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2474&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2475&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2476&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2477&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2478&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2479&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2480&contractCode=CA&parkId=120099',
+       if switch_map['table_format']:
+          # dig down further into the table
+          soup = soup.find('table', attrs={'id':'calendar'})
 
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2481&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2482&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2483&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2484&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2485&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2486&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2487&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2488&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2489&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2490&contractCode=CA&parkId=120099',
-
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2491&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2492&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2493&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2494&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2495&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2496&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2497&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2498&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2499&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2500&contractCode=CA&parkId=120099',
-
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2501&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2502&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2503&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2504&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2505&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2506&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2507&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2508&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2509&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2510&contractCode=CA&parkId=120099',
-
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2511&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2512&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2513&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2514&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2515&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2516&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2517&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2518&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2519&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2520&contractCode=CA&parkId=120099',
-
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2521&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2522&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2523&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2524&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2525&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2526&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2527&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2528&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2529&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2530&contractCode=CA&parkId=120099',
-
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2531&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2532&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2533&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2534&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2535&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2536&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2537&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2538&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2539&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2540&contractCode=CA&parkId=120099',
-
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2541&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2542&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2543&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2544&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2545&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2546&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2547&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2548&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2549&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2550&contractCode=CA&parkId=120099',
-
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2551&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2552&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2553&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2554&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2555&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2556&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2557&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2558&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2559&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2560&contractCode=CA&parkId=120099',
-
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2561&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2562&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2563&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2564&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2565&contractCode=CA&parkId=120099',
-        'http://www.reserveamerica.com/campsiteDetails.do?siteId=2566&contractCode=CA&parkId=120099',
-        ]
-
-    for input_var in input_info:
-        if input_var[0] == "Angel Island State Park, CA":
-            is_campsite_available(input_var[0], angel_island_campsite_info, input_var[1], 1)
-        if input_var[0] == "DL Bliss State Park, CA":
-            is_campsite_available(input_var[0], dl_bliss_campsite_info, input_var[1], 1)
+       id_name = soup.find_all(attrs={'class':'sitemarker'})
+       # print id_name
+       for site in id_name:
+          # construct url
+          url = campsite_url_head + '&siteId=' + site['id'] + '&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=' + str(length_of_stay)      
+          # print url
+          campsite_reservation_map = get_campsite_info(url, d) 
+          if get_campsite_status(campsite_reservation_map, d, 1):
+             subject = campground + ' - ' + 'Campsite Available!!!'
+             body = body  + '\n' + d.strftime("%m/%d/%y") + ' | ' + d.strftime("%a") + ' | ' + url
+             print campground + ' | ' + 'Campsite Available' + ' | ' + d.strftime("%m/%d/%y") + ' | ' + d.strftime("%a") + ' | ' + url
+    # send_mail_over_ssl('bugmenot345@gmail.com', 'suzqUDD6', 'aseemm@gmail.com', subject, body)
 
     pass
 
