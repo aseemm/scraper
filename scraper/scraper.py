@@ -4,6 +4,8 @@ import urllib
 import requests
 from pprint import pprint
 from datetime import date, timedelta
+import smtplib
+from email.mime.text import MIMEText
 
 """
 scraper [campground] [date] [number_of_days]
@@ -26,6 +28,22 @@ todo - implement 'non 1' number of days
 # soup.select('a[href^="http://example.com/"]')     # find tags by attribute value, all contains 'http://example.com/'
 # soup.select('p[lang|=en]')                        # match language code
 
+def send_mail(content):
+   print "Sending Alert Mail"
+   server = smtplib.SMTP('smtp.gmail.com',587)
+   server.starttls()
+   from_addr = 'bugmenot345@gmail.com'
+   to_addr = 'aseemm@gmail.com'
+
+   msg = MIMEText(content)
+   msg['To'] = from_addr
+   msg['From'] = to_addr
+   msg['Subject'] = 'Campsite ALert'
+   server.login('bugmenot345@gmail.com','suzqUdd6')
+   server.sendmail(from_addr,to_addr,msg)
+   server.quit()
+
+
 def is_campsite_available(campground, campsites, d, number_of_days):
     for url in campsites:
         url_var = url + '&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=1'
@@ -33,6 +51,7 @@ def is_campsite_available(campground, campsites, d, number_of_days):
         campsite_reservation_map = get_campsite_info(url_var, d) 
         if get_campsite_status(campsite_reservation_map, d, 1):
             print campground + ' - ' + 'Campsite Available' + ' ' + d.strftime("%m/%d/%y") + ' ' + d.strftime("%a") + ' - ' + url_var
+            send_mail(campground + ' - ' + 'Campsite Available' + ' ' + d.strftime("%m/%d/%y") + ' ' + d.strftime("%a") + ' - ' + url_var)
 
 def get_campsite_info(url, d):
     # print "Scraping..." + url 
@@ -69,15 +88,15 @@ def main():
     """Main entry point for the script"""
 
     input_info = [
-        ["DL Bliss State Park, CA", date(2016, 8, 6)],
-        ["DL Bliss State Park, CA", date(2016, 8, 13)],
-        ["DL Bliss State Park, CA", date(2016, 8, 20)],
-        ["DL Bliss State Park, CA", date(2016, 8, 27)],
-        ["Angel Island State Park, CA", date(2016, 8, 6)],
-        ["Angel Island State Park, CA", date(2016, 8, 13)],
-        ["Angel Island State Park, CA", date(2016, 8, 20)],
+#        ["DL Bliss State Park, CA", date(2016, 8, 6)],
+#        ["DL Bliss State Park, CA", date(2016, 8, 13)],
+#        ["DL Bliss State Park, CA", date(2016, 8, 20)],
+#        ["DL Bliss State Park, CA", date(2016, 8, 27)],
+#        ["Angel Island State Park, CA", date(2016, 8, 6)],
+#        ["Angel Island State Park, CA", date(2016, 8, 13)],
+#        ["Angel Island State Park, CA", date(2016, 8, 20)],
         ["Angel Island State Park, CA", date(2016, 8, 24)],
-        ["Angel Island State Park, CA", date(2016, 8, 27)],
+#        ["Angel Island State Park, CA", date(2016, 8, 27)],
         ]
 
     campground_info = [
