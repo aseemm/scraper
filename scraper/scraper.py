@@ -5,7 +5,6 @@ import requests
 from pprint import pprint
 from datetime import date, timedelta
 import smtplib
-from email.mime.text import MIMEText
 
 """
 scraper [campground] [date] [number_of_days]
@@ -28,30 +27,60 @@ todo - implement 'non 1' number of days
 # soup.select('a[href^="http://example.com/"]')     # find tags by attribute value, all contains 'http://example.com/'
 # soup.select('p[lang|=en]')                        # match language code
 
-def send_mail(content):
-   print "Sending Alert Mail"
-   server = smtplib.SMTP('smtp.gmail.com',587)
-   server.starttls()
-   from_addr = 'bugmenot345@gmail.com'
-   to_addr = 'aseemm@gmail.com'
+def send_mail(user, pwd, recipient, subject, body):
+    gmail_user = user
+    gmail_pwd = pwd
+    FROM = user
+    TO = recipient if type(recipient) is list else [recipient]
+    SUBJECT = subject
+    TEXT = body
 
-   msg = MIMEText(content)
-   msg['To'] = from_addr
-   msg['From'] = to_addr
-   msg['Subject'] = 'Campsite ALert'
-   server.login('bugmenot345@gmail.com','suzqUdd6')
-   server.sendmail(from_addr,to_addr,msg)
-   server.quit()
+    # Prepare actual message
+    message = """\From: %s\nTo: %s\nSubject: %s\n\n%s
+    """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.ehlo()
+        server.starttls()
+        server.login(gmail_user, gmail_pwd)
+        server.sendmail(FROM, TO, message)
+        server.close()
+        # print 'successfully sent the mail'
+    except:
+        print "failed to send mail"
 
+def send_mail_over_ssl(user, pwd, recipient, subject, body):
+    gmail_user = user
+    gmail_pwd = pwd
+    FROM = user
+    TO = recipient if type(recipient) is list else [recipient]
+    SUBJECT = subject
+    TEXT = body
+
+    # Prepare actual message
+    message = """\From: %s\nTo: %s\nSubject: %s\n\n%s
+    """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
+
+    # SMTP_SSL Example
+    server_ssl = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+    server_ssl.ehlo() # optional, called by login()
+    server_ssl.login(gmail_user, gmail_pwd)  
+    # ssl server doesn't support or need tls, so don't call server_ssl.starttls() 
+    server_ssl.sendmail(FROM, TO, message)
+    server_ssl.close()
+    # print 'successfully sent the mail'
 
 def is_campsite_available(campground, campsites, d, number_of_days):
-    for url in campsites:
-        url_var = url + '&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=1'
-        # print url_var
-        campsite_reservation_map = get_campsite_info(url_var, d) 
-        if get_campsite_status(campsite_reservation_map, d, 1):
-            print campground + ' - ' + 'Campsite Available' + ' ' + d.strftime("%m/%d/%y") + ' ' + d.strftime("%a") + ' - ' + url_var
-            send_mail(campground + ' - ' + 'Campsite Available' + ' ' + d.strftime("%m/%d/%y") + ' ' + d.strftime("%a") + ' - ' + url_var)
+   body = ""
+   for url in campsites:
+      url_var = url + '&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=1'
+      # print url_var
+      campsite_reservation_map = get_campsite_info(url_var, d) 
+      if get_campsite_status(campsite_reservation_map, d, 1):
+         subject = campground + ' - ' + 'Campsite Available!!!'
+         body = body  + '\n' + d.strftime("%m/%d/%y") + ' ' + d.strftime("%a") + ' - ' + url_var
+         print campground + ' - ' + 'Campsite Available' + ' ' + d.strftime("%m/%d/%y") + ' ' + d.strftime("%a") + ' - ' + url_var
+   # send_mail_over_ssl('bugmenot345@gmail.com', 'suzqUDD6', 'aseemm@gmail.com', subject, body)
 
 def get_campsite_info(url, d):
     # print "Scraping..." + url 
