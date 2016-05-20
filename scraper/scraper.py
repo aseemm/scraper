@@ -56,7 +56,7 @@ big_basin_siteid_info = [
    'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120009&startIdx=125',
    ]
 big_basin_campsite_url_head = 'http://www.reserveamerica.com/campsiteDetails.do?contractCode=CA&parkId=120009'
-big_basin_switch_map = {'table_format': 1, 'exclude_campsites': ['26646', '26642', '26632', '26634']}
+big_basin_switch_map = {'table_format': 1, 'exclude_campsites': ['26646', '26642', '26632', '26634', '26647']}
 
 yosemite_lower_pines_siteid_info = [
    'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70928&startIdx=0',
@@ -89,6 +89,43 @@ yosemite_north_pines_siteid_info = [
    ]
 yosemite_north_pines_campsite_url_head = 'http://www.recreation.gov/camping/North_Pines/r/campsiteDetails.do?contractCode=NRSO&parkId=70927'
 yosemite_north_pines_switch_map = {'table_format': 0, 'exclude_campsites': []}
+
+yosemite_wawona_siteid_info = [
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70924&startIdx=0',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70924&startIdx=25',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70924&startIdx=50',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70924&startIdx=75',
+   ]
+yosemite_wawona_campsite_url_head = 'http://www.recreation.gov/camping/Wawona/r/campsiteDetails.do?contractCode=NRSO&parkId=70924'
+yosemite_wawona_switch_map = {'table_format': 0, 'exclude_campsites': []}
+
+yosemite_crane_flat_siteid_info = [
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70930&startIdx=0',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70930&startIdx=25',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70930&startIdx=50',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70930&startIdx=75',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70930&startIdx=100',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70930&startIdx=125',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70930&startIdx=150',
+   ]
+yosemite_crane_flat_campsite_url_head = 'http://www.recreation.gov/camping/Crane_Flat/r/campsiteDetails.do?contractCode=NRSO&parkId=70930'
+yosemite_crane_flat_switch_map = {'table_format': 0, 'exclude_campsites': []}
+
+yosemite_hodgdon_meadow_siteid_info = [
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70929&startIdx=0',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70929&startIdx=25',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70929&startIdx=50',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70929&startIdx=75',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70929&startIdx=100',
+   ]
+yosemite_hodgdon_meadow_campsite_url_head = 'http://www.recreation.gov/camping/Hodgdon_Meadow/r/campsiteDetails.do?contractCode=NRSO&parkId=70929'
+yosemite_hodgdon_meadow_switch_map = {'table_format': 0, 'exclude_campsites': []}
+
+yosemite_tuolumne_meadows_siteid_info = [
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70926&startIdx=0',
+   ]
+yosemite_tuolumne_meadows_campsite_url_head = 'http://www.recreation.gov/camping/Tuolumne_Meadows/r/campsiteDetails.do?contractCode=NRSO&parkId=70926'
+yosemite_tuolumne_meadows_switch_map = {'table_format': 0, 'exclude_campsites': []}
 
 def send_mail(user, pwd, recipient, subject, body):
     gmail_user = user
@@ -172,6 +209,10 @@ def get_campground_siteids(x):
         'Yosemite Lower Pines': yosemite_lower_pines_siteid_info,
         'Yosemite Upper Pines': yosemite_upper_pines_siteid_info,
         'Yosemite North Pines': yosemite_north_pines_siteid_info,
+        'Yosemite Wawona': yosemite_wawona_siteid_info,
+        'Yosemite Crane Flat': yosemite_crane_flat_siteid_info,
+        'Yosemite Hodgdon Meadow': yosemite_hodgdon_meadow_siteid_info,
+        'Yosemite Tuolumne Meadows': yosemite_tuolumne_meadows_siteid_info,
     }.get(x, angel_island_siteid_info)
 
 def get_campground_campsite_url_head(x):
@@ -182,6 +223,10 @@ def get_campground_campsite_url_head(x):
         'Yosemite Lower Pines': yosemite_lower_pines_campsite_url_head,
         'Yosemite Upper Pines': yosemite_upper_pines_campsite_url_head,
         'Yosemite North Pines': yosemite_north_pines_campsite_url_head,
+        'Yosemite Wawona': yosemite_wawona_campsite_url_head,
+        'Yosemite Crane Flat': yosemite_crane_flat_campsite_url_head,
+        'Yosemite Hodgdon Meadow': yosemite_hodgdon_meadow_campsite_url_head,
+        'Yosemite Tuolumne Meadows': yosemite_tuolumne_meadows_campsite_url_head,
     }.get(x, angel_island_campsite_url_head)
 
 def get_switch_map(x):
@@ -192,6 +237,10 @@ def get_switch_map(x):
         'Yosemite Lower Pines': yosemite_lower_pines_switch_map,
         'Yosemite Upper Pines': yosemite_upper_pines_switch_map,
         'Yosemite North Pines': yosemite_north_pines_switch_map,
+        'Yosemite Wawona': yosemite_wawona_switch_map,
+        'Yosemite Crane Flat': yosemite_crane_flat_switch_map,
+        'Yosemite Hodgdon Meadow': yosemite_hodgdon_meadow_switch_map,
+        'Yosemite Tuolumne Meadows': yosemite_tuolumne_meadows_switch_map,
     }.get(x, angel_island_switch_map)
 
 def check_campground_availability(campground, d, length_of_stay):
@@ -237,12 +286,21 @@ def main():
        ["Yosemite Lower Pines", date(2016, 5, 21)],
        ["Yosemite Upper Pines", date(2016, 5, 21)],
        ["Yosemite North Pines", date(2016, 5, 21)],
+       ["Yosemite Wawona", date(2016, 5, 21)],
+       ["Yosemite Crane Flat", date(2016, 5, 21)],
+       ["Yosemite Hodgdon Meadow", date(2016, 5, 21)],
+       ["Yosemite Tuolumne Meadows", date(2016, 5, 21)],
+
        ["Angel Island State Park", date(2016, 5, 28)],
        ["DL Bliss State Park", date(2016, 5, 28)],
        ["Big Basin State Park", date(2016, 5, 28)],
        ["Yosemite Lower Pines", date(2016, 5, 28)],
        ["Yosemite Upper Pines", date(2016, 5, 28)],
        ["Yosemite North Pines", date(2016, 5, 28)],
+       ["Yosemite Wawona", date(2016, 5, 28)],
+       ["Yosemite Crane Flat", date(2016, 5, 28)],
+       ["Yosemite Hodgdon Meadow", date(2016, 5, 28)],
+       ["Yosemite Tuolumne Meadows", date(2016, 5, 28)],
        # June
        ### Father's Day. 6/18
        ["Angel Island State Park", date(2016, 6, 18)],
