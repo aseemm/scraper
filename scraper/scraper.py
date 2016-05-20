@@ -14,6 +14,7 @@ todo - cache implementation for better performance/bandwidth usave
 todo - better implementation for globals
 todo - implement 'non 1' number of days
 todo - derive exclude_campsite list rather than manually specify
+todo - check yosemite tuolumne meadows info again
 """
 
 # soup.select("title")                              # get title tag
@@ -44,7 +45,7 @@ dl_bliss_siteid_info = [
    'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120099&startIdx=125',
    ]
 dl_bliss_campsite_url_head = 'http://www.reserveamerica.com/campsiteDetails.do?contractCode=CA&parkId=120099'
-dl_bliss_switch_map = {'table_format': 1, 'exclude_campsites': []}
+dl_bliss_switch_map = {'table_format': 1, 'exclude_campsites': ['15002']}
 
 big_basin_siteid_info = [
    'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120009&startIdx=0',
@@ -64,6 +65,30 @@ yosemite_lower_pines_siteid_info = [
    ]
 yosemite_lower_pines_campsite_url_head = 'http://www.recreation.gov/camping/Lower_Pines/r/campsiteDetails.do?contractCode=NRSO&parkId=70928'
 yosemite_lower_pines_switch_map = {'table_format': 0, 'exclude_campsites': []}
+
+yosemite_upper_pines_siteid_info = [
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70925&startIdx=0',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70925&startIdx=25',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70925&startIdx=50',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70925&startIdx=75',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70925&startIdx=100',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70925&startIdx=125',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70925&startIdx=150',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70925&startIdx=175',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70925&startIdx=200',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70925&startIdx=225',
+   ]
+yosemite_upper_pines_campsite_url_head = 'http://www.recreation.gov/camping/Upper_Pines/r/campsiteDetails.do?contractCode=NRSO&parkId=70925'
+yosemite_upper_pines_switch_map = {'table_format': 0, 'exclude_campsites': []}
+
+yosemite_north_pines_siteid_info = [
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70927&startIdx=0',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70927&startIdx=25',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70927&startIdx=50',
+   'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70927&startIdx=75',
+   ]
+yosemite_north_pines_campsite_url_head = 'http://www.recreation.gov/camping/North_Pines/r/campsiteDetails.do?contractCode=NRSO&parkId=70927'
+yosemite_north_pines_switch_map = {'table_format': 0, 'exclude_campsites': []}
 
 def send_mail(user, pwd, recipient, subject, body):
     gmail_user = user
@@ -145,6 +170,8 @@ def get_campground_siteids(x):
         'DL Bliss State Park': dl_bliss_siteid_info,
         'Big Basin State Park': big_basin_siteid_info,
         'Yosemite Lower Pines': yosemite_lower_pines_siteid_info,
+        'Yosemite Upper Pines': yosemite_upper_pines_siteid_info,
+        'Yosemite North Pines': yosemite_north_pines_siteid_info,
     }.get(x, angel_island_siteid_info)
 
 def get_campground_campsite_url_head(x):
@@ -153,6 +180,8 @@ def get_campground_campsite_url_head(x):
         'DL Bliss State Park': dl_bliss_campsite_url_head,
         'Big Basin State Park': big_basin_campsite_url_head,
         'Yosemite Lower Pines': yosemite_lower_pines_campsite_url_head,
+        'Yosemite Upper Pines': yosemite_upper_pines_campsite_url_head,
+        'Yosemite North Pines': yosemite_north_pines_campsite_url_head,
     }.get(x, angel_island_campsite_url_head)
 
 def get_switch_map(x):
@@ -161,6 +190,8 @@ def get_switch_map(x):
         'DL Bliss State Park': dl_bliss_switch_map,
         'Big Basin State Park': big_basin_switch_map,
         'Yosemite Lower Pines': yosemite_lower_pines_switch_map,
+        'Yosemite Upper Pines': yosemite_upper_pines_switch_map,
+        'Yosemite North Pines': yosemite_north_pines_switch_map,
     }.get(x, angel_island_switch_map)
 
 def check_campground_availability(campground, d, length_of_stay):
@@ -204,14 +235,20 @@ def main():
        ["DL Bliss State Park", date(2016, 5, 21)],
        ["Big Basin State Park", date(2016, 5, 21)],
        ["Yosemite Lower Pines", date(2016, 5, 21)],
+       ["Yosemite Upper Pines", date(2016, 5, 21)],
+       ["Yosemite North Pines", date(2016, 5, 21)],
        ["Angel Island State Park", date(2016, 5, 28)],
        ["DL Bliss State Park", date(2016, 5, 28)],
        ["Big Basin State Park", date(2016, 5, 28)],
        ["Yosemite Lower Pines", date(2016, 5, 28)],
+       ["Yosemite Upper Pines", date(2016, 5, 28)],
+       ["Yosemite North Pines", date(2016, 5, 28)],
        # June
        ### Father's Day. 6/18
        ["Angel Island State Park", date(2016, 6, 18)],
        ["Yosemite Lower Pines", date(2016, 6, 18)],
+       ["Yosemite Upper Pines", date(2016, 6, 18)],
+       ["Yosemite North Pines", date(2016, 6, 18)],
        # July
        ### Independence Day, 7/2
        ["DL Bliss State Park", date(2016, 7, 2)],
