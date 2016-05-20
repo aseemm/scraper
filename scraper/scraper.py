@@ -11,8 +11,9 @@ scraper [campground] [date] [number_of_days]
 return url, available/reserved
 
 todo - cache implementation for better performance/bandwidth usave
-todo - better implementation for url structures
+todo - better implementation for globals
 todo - implement 'non 1' number of days
+todo - derive exclude_campsite list rather than manually specify
 """
 
 # soup.select("title")                              # get title tag
@@ -32,7 +33,7 @@ angel_island_siteid_info = [
    'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120003&startIdx=0',
    ]
 angel_island_campsite_url_head = 'http://www.reserveamerica.com/campsiteDetails.do?contractCode=CA&parkId=120003'
-angel_island_switch_map = {'table_format': 1}
+angel_island_switch_map = {'table_format': 1, 'exclude_campsites': ['546', '547', '544']}
 
 dl_bliss_siteid_info = [
    'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120099&startIdx=0',
@@ -43,7 +44,7 @@ dl_bliss_siteid_info = [
    'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120099&startIdx=125',
    ]
 dl_bliss_campsite_url_head = 'http://www.reserveamerica.com/campsiteDetails.do?contractCode=CA&parkId=120099'
-dl_bliss_switch_map = {'table_format': 1}
+dl_bliss_switch_map = {'table_format': 1, 'exclude_campsites': []}
 
 yosemite_lower_pines_siteid_info = [
    'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70928&startIdx=0',
@@ -51,7 +52,7 @@ yosemite_lower_pines_siteid_info = [
    'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70928&startIdx=50',
    ]
 yosemite_lower_pines_campsite_url_head = 'http://www.recreation.gov/camping/Lower_Pines/r/campsiteDetails.do?contractCode=NRSO&parkId=70928'
-yosemite_lower_pines_switch_map = {'table_format': 0}
+yosemite_lower_pines_switch_map = {'table_format': 0, 'exclude_campsites': []}
 
 def send_mail(user, pwd, recipient, subject, body):
     gmail_user = user
@@ -168,61 +169,46 @@ def check_campground_availability(campground, d, length_of_stay):
        id_name = soup.find_all(attrs={'class':'sitemarker'})
        # print id_name
        for site in id_name:
-          # construct url
-          url = campsite_url_head + '&siteId=' + site['id'] + '&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=' + str(length_of_stay)      
-          # print url
-          campsite_reservation_map = get_campsite_info(url, d) 
-          if get_campsite_status(campsite_reservation_map, d, 1):
-             subject = campground + ' - ' + 'Campsite Available!!!'
-             body = body  + '\n' + d.strftime("%m/%d/%y") + ' | ' + d.strftime("%a") + ' | ' + url
-             print campground + ' | ' + 'Campsite Available' + ' | ' + d.strftime("%m/%d/%y") + ' | ' + d.strftime("%a") + ' | ' + url
-    # send_mail_over_ssl('bugmenot345@gmail.com', 'suzqUdd6', 'aseemm@gmail.com', subject, body)
+          if site['id'] not in switch_map['exclude_campsites']:
+             # construct url
+             url = campsite_url_head + '&siteId=' + site['id'] + '&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=' + str(length_of_stay)      
+             # print url
+             campsite_reservation_map = get_campsite_info(url, d) 
+             if get_campsite_status(campsite_reservation_map, d, 1):
+                subject = campground + ' - ' + 'Campsite Available!!!'
+                body = body  + '\n' + d.strftime("%m/%d/%y") + ' | ' + d.strftime("%a") + ' | ' + url
+                print campground + ' | ' + 'Campsite Available' + ' | ' + d.strftime("%m/%d/%y") + ' | ' + d.strftime("%a") + ' | ' + url
+          # send_mail_over_ssl('bugmenot345@gmail.com', 'suzqUdd6', 'aseemm@gmail.com', subject, body)
 
 def main():
     """Main entry point for the script"""
 
     # use a named tuple instead?
     input_info = [
-       ["DL Bliss State Park", date(2016, 8, 6)],
-       ["Angel Island State Park", date(2016, 8, 24)],
-       ["Yosemite Lower Pines", date(2016, 8, 27)],
+       # May
+       # June
+       ### Father's Day. 6/18
+       ["Angel Island State Park", date(2016, 6, 18)],
+       ["Yosemite Lower Pines", date(2016, 6, 18)],
+       # July
+       ### Independence Day, 7/2
+       ["DL Bliss State Park", date(2016, 7, 2)],
+       # August
+       ["Angel Island State Park", date(2016, 8, 6)],
+       ["Angel Island State Park", date(2016, 8, 13)],
+       ["Angel Island State Park", date(2016, 8, 20)],
+       ["Angel Island State Park", date(2016, 8, 27)],
+       # September
+       ### Labor Day, 9/3
+       ["Big Basin State Park", date(2016, 9, 3)],
         ]
 
     for entry in input_info:
        campground = entry[0]
        d = entry[1]
        length_of_stay = 1
-       print "Scraping " + campground + "..."
+       print "Scraping " + campground + "...for " + d.strftime("%m/%d/%y") + '...'
        check_campground_availability(campground, d, length_of_stay)
-
-    # siteid_info = get_campground_siteids(campground)
-    # campsite_url_head = get_campground_campsite_url_head(campground)
-    # switch_map = get_switch_map(campground)
-
-    # body = ""
-    # # extract siteid's for campground
-    # siteid_list = []
-    # for url in siteid_info:
-    #    print url
-    #    resp = requests.get(url,proxies=urllib.getproxies())
-    #    soup = BeautifulSoup(resp.text,"html.parser")
-
-    #    if switch_map['table_format']:
-    #       # dig down further into the table
-    #       soup = soup.find('table', attrs={'id':'calendar'})
-
-    #    id_name = soup.find_all(attrs={'class':'sitemarker'})
-    #    # print id_name
-    #    for site in id_name:
-    #       # construct url
-    #       url = campsite_url_head + '&siteId=' + site['id'] + '&arvdate=' + d.strftime("%m/%d/%y") + '&lengthOfStay=' + str(length_of_stay)      
-    #       # print url
-    #       campsite_reservation_map = get_campsite_info(url, d) 
-    #       if get_campsite_status(campsite_reservation_map, d, 1):
-    #          subject = campground + ' - ' + 'Campsite Available!!!'
-    #          body = body  + '\n' + d.strftime("%m/%d/%y") + ' | ' + d.strftime("%a") + ' | ' + url
-    #          print campground + ' | ' + 'Campsite Available' + ' | ' + d.strftime("%m/%d/%y") + ' | ' + d.strftime("%a") + ' | ' + url
-    # # send_mail_over_ssl('bugmenot345@gmail.com', 'suzqUdd6', 'aseemm@gmail.com', subject, body)
 
     pass
 
