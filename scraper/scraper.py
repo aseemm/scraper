@@ -46,6 +46,17 @@ dl_bliss_siteid_info = [
 dl_bliss_campsite_url_head = 'http://www.reserveamerica.com/campsiteDetails.do?contractCode=CA&parkId=120099'
 dl_bliss_switch_map = {'table_format': 1, 'exclude_campsites': []}
 
+big_basin_siteid_info = [
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120009&startIdx=0',
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120009&startIdx=25',
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120009&startIdx=50',
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120009&startIdx=75',
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120009&startIdx=100',
+   'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120009&startIdx=125',
+   ]
+big_basin_campsite_url_head = 'http://www.reserveamerica.com/campsiteDetails.do?contractCode=CA&parkId=120009'
+big_basin_switch_map = {'table_format': 1, 'exclude_campsites': ['26646', '26642', '26632', '26634']}
+
 yosemite_lower_pines_siteid_info = [
    'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70928&startIdx=0',
    'http://www.recreation.gov/campsitePaging.do?contractCode=NRSO&parkId=70928&startIdx=25',
@@ -132,6 +143,7 @@ def get_campground_siteids(x):
     return {
         'Angel Island State Park': angel_island_siteid_info,
         'DL Bliss State Park': dl_bliss_siteid_info,
+        'Big Basin State Park': big_basin_siteid_info,
         'Yosemite Lower Pines': yosemite_lower_pines_siteid_info,
     }.get(x, angel_island_siteid_info)
 
@@ -139,6 +151,7 @@ def get_campground_campsite_url_head(x):
     return {
         'Angel Island State Park': angel_island_campsite_url_head,
         'DL Bliss State Park': dl_bliss_campsite_url_head,
+        'Big Basin State Park': big_basin_campsite_url_head,
         'Yosemite Lower Pines': yosemite_lower_pines_campsite_url_head,
     }.get(x, angel_island_campsite_url_head)
 
@@ -146,6 +159,7 @@ def get_switch_map(x):
     return {
         'Angel Island State Park': angel_island_switch_map,
         'DL Bliss State Park': dl_bliss_switch_map,
+        'Big Basin State Park': big_basin_switch_map,
         'Yosemite Lower Pines': yosemite_lower_pines_switch_map,
     }.get(x, angel_island_switch_map)
 
@@ -186,6 +200,14 @@ def main():
     # use a named tuple instead?
     input_info = [
        # May
+       ["Angel Island State Park", date(2016, 5, 21)],
+       ["DL Bliss State Park", date(2016, 5, 21)],
+       ["Big Basin State Park", date(2016, 5, 21)],
+       ["Yosemite Lower Pines", date(2016, 5, 21)],
+       ["Angel Island State Park", date(2016, 5, 28)],
+       ["DL Bliss State Park", date(2016, 5, 28)],
+       ["Big Basin State Park", date(2016, 5, 28)],
+       ["Yosemite Lower Pines", date(2016, 5, 28)],
        # June
        ### Father's Day. 6/18
        ["Angel Island State Park", date(2016, 6, 18)],
@@ -198,6 +220,10 @@ def main():
        ["Angel Island State Park", date(2016, 8, 13)],
        ["Angel Island State Park", date(2016, 8, 20)],
        ["Angel Island State Park", date(2016, 8, 27)],
+       ["Big Basin State Park", date(2016, 8, 6)],
+       ["Big Basin State Park", date(2016, 8, 13)],
+       ["Big Basin State Park", date(2016, 8, 20)],
+       ["Big Basin State Park", date(2016, 8, 27)],
        # September
        ### Labor Day, 9/3
        ["Big Basin State Park", date(2016, 9, 3)],
