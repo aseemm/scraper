@@ -249,6 +249,7 @@ def check_campground_availability(campground, d, length_of_stay):
     switch_map = get_switch_map(campground)
 
     body = ""
+    subject = ""
     # extract siteid's for campground
     siteid_list = []
     for url in siteid_info:
@@ -272,7 +273,8 @@ def check_campground_availability(campground, d, length_of_stay):
                 subject = campground + ' - ' + 'Campsite Available!!!'
                 body = body  + '\n' + d.strftime("%m/%d/%y") + ' | ' + d.strftime("%a") + ' | ' + url
                 print campground + ' | ' + 'Campsite Available' + ' | ' + d.strftime("%m/%d/%y") + ' | ' + d.strftime("%a") + ' | ' + url
-          # send_mail_over_ssl('bugmenot345@gmail.com', 'suzqUdd6', 'aseemm@gmail.com', subject, body)
+    if body != "" and subject != "":
+        send_mail_over_ssl('bugmenot345@gmail.com', 'suzqUdd6', 'aseemm@gmail.com', subject, body)
 
 def main():
     """Main entry point for the script"""
@@ -280,17 +282,6 @@ def main():
     # use a named tuple instead?
     input_info = [
        # May
-       ["Angel Island State Park", date(2016, 5, 21)],
-       ["DL Bliss State Park", date(2016, 5, 21)],
-       ["Big Basin State Park", date(2016, 5, 21)],
-       ["Yosemite Lower Pines", date(2016, 5, 21)],
-       ["Yosemite Upper Pines", date(2016, 5, 21)],
-       ["Yosemite North Pines", date(2016, 5, 21)],
-       ["Yosemite Wawona", date(2016, 5, 21)],
-       ["Yosemite Crane Flat", date(2016, 5, 21)],
-       ["Yosemite Hodgdon Meadow", date(2016, 5, 21)],
-       ["Yosemite Tuolumne Meadows", date(2016, 5, 21)],
-
        ["Angel Island State Park", date(2016, 5, 28)],
        ["DL Bliss State Park", date(2016, 5, 28)],
        ["Big Basin State Park", date(2016, 5, 28)],
