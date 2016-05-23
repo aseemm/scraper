@@ -298,9 +298,15 @@ def main():
        ["Yosemite Lower Pines", date(2016, 6, 18)],
        ["Yosemite Upper Pines", date(2016, 6, 18)],
        ["Yosemite North Pines", date(2016, 6, 18)],
+       ["Yosemite Wawona", date(2016, 6, 18)],
+       ["Yosemite Crane Flat", date(2016, 6, 18)],
+       ["Yosemite Hodgdon Meadow", date(2016, 6, 18)],
+       ["Yosemite Tuolumne Meadows", date(2016, 6, 18)],
        # July
        ### Independence Day, 7/2
        ["DL Bliss State Park", date(2016, 7, 2)],
+       ["Angel Island State Park", date(2016, 7, 2)],
+       ["Big Basin State Park", date(2016, 7, 2)],
        # August
        ["Angel Island State Park", date(2016, 8, 6)],
        ["Angel Island State Park", date(2016, 8, 13)],
