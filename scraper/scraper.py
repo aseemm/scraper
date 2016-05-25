@@ -282,19 +282,34 @@ def main():
     # use a named tuple instead?
     input_info = [
        # May
-       ["Angel Island State Park", date(2016, 5, 28)],
-       ["DL Bliss State Park", date(2016, 5, 28)],
-       ["Big Basin State Park", date(2016, 5, 28)],
-       ["Yosemite Lower Pines", date(2016, 5, 28)],
-       ["Yosemite Upper Pines", date(2016, 5, 28)],
-       ["Yosemite North Pines", date(2016, 5, 28)],
-       ["Yosemite Wawona", date(2016, 5, 28)],
-       ["Yosemite Crane Flat", date(2016, 5, 28)],
-       ["Yosemite Hodgdon Meadow", date(2016, 5, 28)],
-       ["Yosemite Tuolumne Meadows", date(2016, 5, 28)],
        # June
+4,11,18,25
        ### Father's Day. 6/18
+       ["Angel Island State Park", date(2016, 6, 4)],
+       ["DL Bliss State Park", date(2016, 6, 4)],
+       ["Big Basin State Park", date(2016, 6, 4)],
+       ["Yosemite Lower Pines", date(2016, 6, 4)],
+       ["Yosemite Upper Pines", date(2016, 6, 4)],
+       ["Yosemite North Pines", date(2016, 6, 4)],
+       ["Yosemite Wawona", date(2016, 6, 4)],
+       ["Yosemite Crane Flat", date(2016, 6, 4)],
+       ["Yosemite Hodgdon Meadow", date(2016, 6, 4)],
+       ["Yosemite Tuolumne Meadows", date(2016, 6, 4)],
+
+       ["Angel Island State Park", date(2016, 6, 11)],
+       ["DL Bliss State Park", date(2016, 6, 11)],
+       ["Big Basin State Park", date(2016, 6, 11)],
+       ["Yosemite Lower Pines", date(2016, 6, 11)],
+       ["Yosemite Upper Pines", date(2016, 6, 11)],
+       ["Yosemite North Pines", date(2016, 6, 11)],
+       ["Yosemite Wawona", date(2016, 6, 11)],
+       ["Yosemite Crane Flat", date(2016, 6, 11)],
+       ["Yosemite Hodgdon Meadow", date(2016, 6, 11)],
+       ["Yosemite Tuolumne Meadows", date(2016, 6, 11)],
+
        ["Angel Island State Park", date(2016, 6, 18)],
+       ["DL Bliss State Park", date(2016, 6, 18)],
+       ["Big Basin State Park", date(2016, 6, 18)],
        ["Yosemite Lower Pines", date(2016, 6, 18)],
        ["Yosemite Upper Pines", date(2016, 6, 18)],
        ["Yosemite North Pines", date(2016, 6, 18)],
@@ -302,23 +317,22 @@ def main():
        ["Yosemite Crane Flat", date(2016, 6, 18)],
        ["Yosemite Hodgdon Meadow", date(2016, 6, 18)],
        ["Yosemite Tuolumne Meadows", date(2016, 6, 18)],
+
+       ["Angel Island State Park", date(2016, 6, 25)],
+       ["DL Bliss State Park", date(2016, 6, 25)],
+       ["Big Basin State Park", date(2016, 6, 25)],
+       ["Yosemite Lower Pines", date(2016, 6, 25)],
+       ["Yosemite Upper Pines", date(2016, 6, 25)],
+       ["Yosemite North Pines", date(2016, 6, 25)],
+       ["Yosemite Wawona", date(2016, 6, 25)],
+       ["Yosemite Crane Flat", date(2016, 6, 25)],
+       ["Yosemite Hodgdon Meadow", date(2016, 6, 25)],
+       ["Yosemite Tuolumne Meadows", date(2016, 6, 25)],
        # July
        ### Independence Day, 7/2
-       ["DL Bliss State Park", date(2016, 7, 2)],
-       ["Angel Island State Park", date(2016, 7, 2)],
-       ["Big Basin State Park", date(2016, 7, 2)],
        # August
-       ["Angel Island State Park", date(2016, 8, 6)],
-       ["Angel Island State Park", date(2016, 8, 13)],
-       ["Angel Island State Park", date(2016, 8, 20)],
-       ["Angel Island State Park", date(2016, 8, 27)],
-       ["Big Basin State Park", date(2016, 8, 6)],
-       ["Big Basin State Park", date(2016, 8, 13)],
-       ["Big Basin State Park", date(2016, 8, 20)],
-       ["Big Basin State Park", date(2016, 8, 27)],
        # September
        ### Labor Day, 9/3
-       ["Big Basin State Park", date(2016, 9, 3)],
         ]
 
     for entry in input_info:
