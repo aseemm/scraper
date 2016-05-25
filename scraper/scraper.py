@@ -283,7 +283,6 @@ def main():
     input_info = [
        # May
        # June
-4,11,18,25
        ### Father's Day. 6/18
        ["Angel Island State Park", date(2016, 6, 4)],
        ["DL Bliss State Park", date(2016, 6, 4)],
