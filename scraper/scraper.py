@@ -276,7 +276,7 @@ def check_campground_availability(campground, d, length_of_stay):
     if body != "" and subject != "":
         send_mail_over_ssl('bugmenot345@gmail.com', 'suzqUdd6', 'aseemm@gmail.com', subject, body)
     else:
-        send_mail_over_ssl('bugmenot345@gmail.com', 'suzqUdd6', 'aseemm@gmail.com', "Campsite Search Failed!", "Campsite Search Failed!")        
+        send_mail_over_ssl('bugmenot345@gmail.com', 'suzqUdd6', 'aseemm@gmail.com', "Campsite Search for " + campground + " Failed!", "")        
 
 def main():
     """Main entry point for the script"""
