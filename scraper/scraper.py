@@ -34,7 +34,7 @@ angel_island_siteid_info = [
    'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120003&startIdx=0',
    ]
 angel_island_campsite_url_head = 'http://www.reserveamerica.com/campsiteDetails.do?contractCode=CA&parkId=120003'
-angel_island_switch_map = {'table_format': 1, 'exclude_campsites': ['546', '547', '544']}
+angel_island_switch_map = {'table_format': 1, 'exclude_campsites': ['546', '547', '544', '1681']}
 
 dl_bliss_siteid_info = [
    'http://www.reserveamerica.com/campsitePaging.do?contractCode=CA&parkId=120099&startIdx=0',
